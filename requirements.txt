@@ -1,0 +1,4 @@
+beautifulsoup4==4.6.0
+pdfminer.six==20170720
+pycryptodome==3.4.6
+six==1.10.0
