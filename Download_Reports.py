@@ -16,9 +16,9 @@ def get_year_from_pdf_filename(pdf_filename):
 def define_pdf_path(path, pdf_filename, tittle):
     year = re.compile('\d+')
     if year.search(tittle):
-        path_1 = path + get_year_from_pdf_filename(tittle) + "/"
+        path_1 = path + get_year_from_pdf_filename(tittle) + "/" # for windows I didn't need to concatenate "/"
     else:
-        path_1 = path + get_year_from_pdf_filename(pdf_filename)+"/" # concatenate pdf_path with pdf_filename
+        path_1 = path + get_year_from_pdf_filename(pdf_filename)+"/" # concatenate pdf_path with pdf_filename for windows I didn't need to concatenate "/"
 
     if os.path.isdir(path_1)== False:
         os.makedirs(path_1) # generate pdf_path containing year folder
@@ -93,7 +93,10 @@ def main():
         # Now I need to loop inside the country and look for the links of the 'article IV' documents
         for country in soup_c.findAll('a', attrs={'href': Href_pattern}, text=pattern_c): # searches for the tag 'a', then searches for a pattern inside the 'href', then searches for a pattern inside the text (text of the link, text inside the tag <a href="..."> text</a>
             link_2 = "http://www.imf.org" + country['href'] # The link can't be access using only the 'href', so I had to concatenate it with "http://www.imf.org"
-            print link_2, country.text
+            try:
+                print link_2, country.text
+            except Exception, e:
+                print "fail to print link and tittle with error:", e
 
             # run the function access_url. similar code of Lines 53-57 was used before in this area of the script. But I need to
             # run a 'while' loop so we decided to create a function for that, so now the function will return the value for the 'response' variable
@@ -107,9 +110,9 @@ def main():
             for doc in soup_d.findAll('a',attrs={'href': ashx_pattern}, text=pattern_d):
                 myPDF = "http://www.imf.org" + doc['href']
                 print myPDF
-                pathPDF = "/Users/astrid/Downloads/PDF_Download/"
+                pathPDF = "/Users/astrid/Downloads/PDF_Download/" # when run in windows make sure the path has "\\" instead of "\" e.g "C:\Downloads\\"
                 pdf_name = re.sub(r'[^a-zA-Z0-9 ]', r'',country.text) #country.text
-                path_file = define_pdf_path(pathPDF, myPDF, pdf_name) + pdf_name[:250] # Mac can handle a [255] max unicode for file names
+                path_file = define_pdf_path(pathPDF, myPDF, pdf_name) + pdf_name[:250] # Mac can handle a [255] max unicode for file names . for Windows max I had to used [:190]
                 if not pdf_exists(path_file): # I initally used the code "if pdf_exists(path_file)==False" but is cleaner using "not"
 
 
