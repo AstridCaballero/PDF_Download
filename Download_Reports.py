@@ -88,15 +88,18 @@ def main():
         soup_c = BeautifulSoup(response_c,'html.parser')
         # create a pattern to look for
         pattern_c = re.compile("Article IV Consultation") # pattern I need to find inside the text
-        Href_pattern = re.compile("aspx") #regex. pattern I need to find inside the tag under the 'href' attribute
+        Href_pattern = re.compile("aspx|Issues") #regex searches for 'aspx' OR 'Issues'. pattern I need to find inside the tag under the 'href' attribute
+        # I added the conditional OR = | to the above code as some files weren't download because they dont have aspx inside the HREF tag
 
         # Now I need to loop inside the country and look for the links of the 'article IV' documents
         for country in soup_c.findAll('a', attrs={'href': Href_pattern}, text=pattern_c): # searches for the tag 'a', then searches for a pattern inside the 'href', then searches for a pattern inside the text (text of the link, text inside the tag <a href="..."> text</a>
             link_2 = "http://www.imf.org" + country['href'] # The link can't be access using only the 'href', so I had to concatenate it with "http://www.imf.org"
+            # print link_2, country.text
             try:
                 print link_2, country.text
             except Exception, e:
-                print "fail to print link and tittle with error:", e
+                print "fail to print link and tittle with error:", str(e)
+
 
             # run the function access_url. similar code of Lines 53-57 was used before in this area of the script. But I need to
             # run a 'while' loop so we decided to create a function for that, so now the function will return the value for the 'response' variable
