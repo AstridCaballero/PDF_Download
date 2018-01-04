@@ -94,7 +94,7 @@ def main():
         # Now I need to loop inside the country and look for the links of the 'article IV' documents
         for country in soup_c.findAll('a', attrs={'href': Href_pattern}, text=pattern_c): # searches for the tag 'a', then searches for a pattern inside the 'href', then searches for a pattern inside the text (text of the link, text inside the tag <a href="..."> text</a>
             link_2 = "http://www.imf.org" + country['href'] # The link can't be access using only the 'href', so I had to concatenate it with "http://www.imf.org"
-            # print link_2, country.text
+            #print link_2, country.text
             try:
                 print link_2, country.text
             except Exception, e:
@@ -115,7 +115,7 @@ def main():
                 print myPDF
                 pathPDF = "/Users/astrid/Downloads/PDF_Download/" # when run in windows make sure the path has "\\" instead of "\" e.g "C:\Downloads\\"
                 pdf_name = re.sub(r'[^a-zA-Z0-9 ]', r'',country.text) #country.text
-                path_file = define_pdf_path(pathPDF, myPDF, pdf_name) + pdf_name[:250] # Mac can handle a [255] max unicode for file names . for Windows max I had to used [:190]
+                path_file = define_pdf_path(pathPDF, myPDF, pdf_name) + pdf_name[:190] # Mac can handle a [255] max unicode for file names . for Windows max I had to used [:190]
                 if not pdf_exists(path_file): # I initally used the code "if pdf_exists(path_file)==False" but is cleaner using "not"
 
 
